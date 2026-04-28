@@ -38,7 +38,7 @@ _DEFAULT_MARGIN = {
 }
 
 try:
-    _VERSION = _pkg_version("md-to-pdf")
+    _VERSION = _pkg_version("md-to-pdf-costamagnus")
 except _PkgNotFoundError:
     _VERSION = "dev"
 
