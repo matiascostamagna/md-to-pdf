@@ -13,7 +13,11 @@ Powered by **Playwright** (Chromium headless) for PDF generation and **pywebview
 
 ## 🖼️ Screenshots
 
+**Desktop GUI**
+
 <img src="docs/screenshots/GUI.png" alt="MD to PDF GUI" width="800"/>
+
+**Markdown → PDF output**
 
 <img src="docs/screenshots/comparation.png" alt="Markdown to PDF comparison" width="800"/>
 
