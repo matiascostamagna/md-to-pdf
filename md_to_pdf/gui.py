@@ -133,16 +133,15 @@ body {
 .preview {
   flex: 1;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
+  align-items: flex-start;
+  justify-content: flex-start;
+  overflow-y: auto;
   background: #f8fafc;
   position: relative;
 }
 
 .preview iframe {
   width: 100%;
-  height: 100%;
   border: none;
 }
 
@@ -466,6 +465,7 @@ function handleLoaded(info) {
   dropZone.classList.add('hidden');
   previewFrame.hidden = false;
 
+  previewFrame.style.height = '100%';
   previewFrame.srcdoc = info.preview_html;
   previewFrame.onload = function() {
     const iframeDoc = previewFrame.contentDocument || previewFrame.contentWindow.document;
@@ -474,7 +474,7 @@ function handleLoaded(info) {
       const html = iframeDoc.documentElement;
       const h = Math.max(body.scrollHeight, html.scrollHeight, body.offsetHeight, html.offsetHeight);
       previewFrame.style.height = h + 'px';
-    }, 100);
+    }, 150);
   };
 
   btnConvert.disabled = false;

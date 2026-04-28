@@ -17,6 +17,8 @@ from __future__ import annotations
 import logging
 import subprocess
 import sys
+from importlib.metadata import PackageNotFoundError as _PkgNotFoundError
+from importlib.metadata import version as _pkg_version
 from pathlib import Path
 
 from playwright.sync_api import Error as PlaywrightError, sync_playwright
@@ -35,10 +37,16 @@ _DEFAULT_MARGIN = {
     "left": "18mm",
 }
 
-_FOOTER_TEMPLATE = """
+try:
+    _VERSION = _pkg_version("md-to-pdf")
+except _PkgNotFoundError:
+    _VERSION = "dev"
+
+_FOOTER_TEMPLATE = f"""
 <div style="font-family:'Segoe UI',sans-serif;font-size:8pt;color:#6b7280;
-            text-align:center;width:100%;margin:0 18mm;">
-  <span class="pageNumber"></span> / <span class="totalPages"></span>
+            width:100%;margin:0 18mm;display:flex;justify-content:space-between;align-items:center;">
+  <span>Developed by @costamagnus &middot; v{_VERSION}</span>
+  <span><span class="pageNumber"></span> / <span class="totalPages"></span></span>
 </div>
 """
 
