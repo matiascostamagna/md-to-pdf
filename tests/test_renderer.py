@@ -160,12 +160,8 @@ def test_install_browser_returns_nonzero_on_failure(monkeypatch: pytest.MonkeyPa
     assert renderer.install_browser() == 7
 
 
-@pytest.mark.skipif(
-    not __import__("shutil").which("playwright"),
-    reason="playwright CLI not on PATH",
-)
 def test_md_to_pdf_integration_produces_pdf(tmp_path: Path) -> None:
-    """End-to-end sanity check; requires Chromium to be installed."""
+    """End-to-end sanity check; skipped when Chromium is not installed."""
     out = tmp_path / "out.pdf"
     try:
         result = renderer.md_to_pdf(FIXTURES / "basic.md", out)
