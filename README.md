@@ -234,8 +234,3 @@ ruff check .
 - Qt is preferred if multiple GUI backends are installed
 - If GUI fails, force backend with PYWEBVIEW_GUI=qt
 
----
-
-## License
-
-MIT
