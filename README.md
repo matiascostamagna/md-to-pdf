@@ -40,19 +40,26 @@ If the GUI fails to start, you likely need to install additional system librarie
 
 ## 📦 Installation
 
-### Recommended (isolated environment)
+### From PyPI (recommended)
 
 ```bash
-python -m venv .venv
-source .venv/bin/activate
-pip install -e .
+pip install md-to-pdf-costamagnus
 ```
----
 
-### Alternative (recommended for CLI tools)
+### With pipx (recommended for CLI-only use)
 
 ```bash
-pipx install .
+pipx install md-to-pdf-costamagnus
+```
+
+### From source (development)
+
+```bash
+git clone https://github.com/matiascostamagna/md-to-pdf.git
+cd md-to-pdf
+python -m venv .venv
+source .venv/bin/activate  # Windows: .venv\Scripts\activate
+pip install -e ".[dev]"
 ```
 
 ---
