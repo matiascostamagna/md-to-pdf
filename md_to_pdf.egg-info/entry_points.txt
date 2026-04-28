@@ -1,2 +1,0 @@
-[console_scripts]
-md-to-pdf = md_to_pdf.__main__:main

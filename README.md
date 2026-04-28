@@ -1,115 +1,156 @@
-# MD → PDF Converter
+# MD → PDF
 
-Convert Markdown files to PDF with full support for:
+> Convert Markdown to polished PDFs — CLI, desktop GUI, or Python API.
 
-- **Text** — headings, paragraphs, bold, italic, strikethrough, highlighted
-- **Code** — fenced code blocks with syntax highlighting (Pygments, Monokai theme)
-- **Images** — local images auto-embedded as base64 data URIs
-- **SVG** — inline SVG rendering and embedded SVG files
-- **HTML** — raw HTML blocks rendered directly
-- **Math** — LaTeX math formulas via Arithmatex + MathJax
-- **Tables** — GitHub-style tables with alternating rows
-- **Lists** — ordered, unordered, task lists with checkboxes
-- **Blockquotes, Footnotes, Definition Lists, Abbreviations**
-- **Admonitions** — info, warning, danger, success callouts
-- **Mermaid diagrams** — rendered as divs
-- **Emoji** — twemoji support
-- **Table of Contents** — auto-generated
-- **Keyboard keys** — `<kbd>` styling
-- **Page breaks** — `\newpage` command
+Powered by **Playwright** (Chromium headless): same render engine on Windows,
+macOS, and Linux; all dependencies managed by `pip`, no system binaries required.
+
+---
+
+## Features
+
+| Category | What's supported |
+|----------|-----------------|
+| Text | Headings, bold, italic, strikethrough, highlight, superscript, subscript |
+| Code | Fenced blocks with syntax highlighting (Monokai), inline code, line numbers |
+| Images | Local files auto-embedded as base64 · SVG inline rendering |
+| Math | LaTeX via Arithmatex (`$...$` / `$$...$$`) |
+| Tables | GitHub-style with alternating rows |
+| Lists | Ordered · unordered · task lists with checkboxes |
+| Callouts | Blockquotes · admonitions (info / warning / danger / tip) · `<details>` |
+| Diagrams | Mermaid (rendered by Chromium at export time) |
+| Structure | Table of contents · footnotes · definition lists · abbreviations · `\newpage` |
+| Extras | Emoji · keyboard keys (`<kbd>`) · magic links · smart symbols |
+
+---
 
 ## Installation
 
 ### Windows / macOS
 
-```
+```sh
 pip install -e .
-md-to-pdf --install-browser
+md-to-pdf --install-browser   # one-time Chromium download (~150 MB)
 ```
 
 ### Linux
 
-On Linux, Playwright needs a few system libraries. Then same steps:
+Playwright's Chromium build requires a few system libs:
 
-```
+```sh
 # Ubuntu / Debian
-sudo apt update
-sudo apt install libatk1.0-0 libatk-bridge2.0-0 libcups2 libdbus-1-3 \
-  libexpat1 libgbm1 libpango-1.0-0 libpangocairo-1.0-0 libx11-6 libx11-xcb1 \
-  libxcb1 libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 \
-  libxi6 libxinerama1 libxrandr2 libxrender1 libxss1 libxtst6 libxkbcommon0
+sudo apt update && sudo apt install -y \
+  libatk1.0-0 libatk-bridge2.0-0 libcups2 libdbus-1-3 libexpat1 libgbm1 \
+  libpango-1.0-0 libpangocairo-1.0-0 libx11-6 libx11-xcb1 libxcb1 \
+  libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 \
+  libxinerama1 libxrandr2 libxrender1 libxss1 libxtst6 libxkbcommon0
 
 # Fedora / RHEL
-sudo dnf install atk at-spi2-atk cups dbus expat libgbm libpango libx11 \
+sudo dnf install -y atk at-spi2-atk cups dbus expat libgbm libpango libx11 \
   libxcomposite libxcursor libxdamage libxext libxfixes libxi libxinerama \
   libxrandr libxrender libxss libxtst libxkbcommon
 
 # Arch
-sudo pacman -S atk at-spi2-atk cups dbus expat libgbm pango libx11 \
+sudo pacman -S --needed atk at-spi2-atk cups dbus expat libgbm pango libx11 \
   libxcomposite libxcursor libxdamage libxext libxfixes libxi libxinerama \
   libxrandr libxrender libxss libxtst libxkbcommon
 ```
 
 Then:
 
-```
+```sh
 pip install -e .
 md-to-pdf --install-browser
 ```
 
-### How it works
+The browser binary is cached by Playwright at `~/.cache/ms-playwright` (Linux/macOS)
+or `%LOCALAPPDATA%\ms-playwright` (Windows) — not inside this project.
 
-The first command installs Python deps. The second downloads the Chromium
-binary used for PDF rendering (~150 MB, one-time, cached under
-`%LOCALAPPDATA%/ms-playwright` on Windows / `~/.cache/ms-playwright` on
-Linux/macOS).
-
-PDF rendering uses **Playwright** (Chromium headless) — same engine on every
-OS, full CSS3 + JavaScript support, all dependencies managed by `pip`.
+---
 
 ## Usage
 
 ### GUI
 
-```
+```sh
+md-to-pdf          # launches the GUI
 md-to-pdf --gui
-# or simply
-md-to-pdf
 ```
 
-Drag-and-drop `.md` files, preview them, configure output settings, and export to PDF.
+Drop a `.md` file onto the window (or click **Open**), adjust settings in the sidebar,
+and click **Convert to PDF**. Output directory, page size, and custom CSS are remembered
+between sessions.
 
 ### CLI
 
-```
-md-to-pdf document.md
-md-to-pdf document.md -o output.pdf
-md-to-pdf document.md --css custom.css --title "My Document"
+```sh
+md-to-pdf document.md                        # output: document.pdf (same dir)
+md-to-pdf document.md -o ~/exports/out.pdf
 md-to-pdf document.md --page-size Letter
+md-to-pdf document.md --css custom.css --title "My Report"
 ```
 
-### Options
+### CLI Options
 
-| Flag | Description |
-|------|-------------|
-| `-o, --output` | Output PDF path |
-| `--css` | Custom CSS file |
-| `--title` | Document title |
-| `--page-size` | A4 / A3 / A5 / Letter / Legal (default: A4) |
-| `--gui` | Launch GUI |
-| `--install-browser` | Download Chromium (~150 MB, one-time) |
-| `-v, --verbose` | Verbose logging |
+| Flag | Default | Description |
+|------|---------|-------------|
+| `-o, --output` | `<input>.pdf` | Output path |
+| `--page-size` | `A4` | `A4` · `A3` · `A5` · `Letter` · `Legal` |
+| `--css` | built-in | Path to a CSS file to override styles |
+| `--title` | filename stem | PDF document title |
+| `--gui` | — | Launch the desktop GUI |
+| `--install-browser` | — | Download Chromium (run once after install) |
+| `-v, --verbose` | — | Verbose logging |
+
+### Python API
+
+```python
+from pathlib import Path
+from md_to_pdf.renderer import md_to_pdf
+from md_to_pdf.css import load_default_css
+
+md_to_pdf(
+    Path("document.md"),
+    Path("output.pdf"),
+    css_content=load_default_css(),
+    title="My Document",
+    page_size="A4",
+)
+```
+
+---
 
 ## Project Structure
 
 ```
 md_to_pdf/
-├── __init__.py       # Package marker
-├── __main__.py       # Entry point (CLI + GUI dispatch)
-├── converter.py      # Markdown → HTML engine
-├── renderer.py       # HTML → PDF via Playwright (Chromium headless)
-├── settings.py       # Persistent GUI preferences
-├── css.py            # Default PDF CSS stylesheet
-├── gui.py            # pywebview desktop GUI
-└── assets/           # Static assets (future)
+├── __main__.py   — CLI entry point + GUI dispatch
+├── converter.py  — Markdown → HTML (python-markdown + pymdownx)
+├── renderer.py   — HTML → PDF via Playwright (Chromium headless)
+├── css.py        — Default print stylesheet (GitHub-inspired)
+├── settings.py   — Persistent GUI preferences (JSON, per-OS config dir)
+└── gui.py        — Desktop GUI (pywebview)
+
+tests/
+├── fixtures/     — Sample .md files for testing
+├── test_converter.py
+├── test_renderer.py
+└── test_settings.py
 ```
+
+---
+
+## Development
+
+```sh
+pip install -e ".[dev]"
+pytest
+```
+
+Dev extras: `ruff` (linter) · `pytest`.
+
+---
+
+## License
+
+MIT
