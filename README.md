@@ -1,4 +1,4 @@
-# MD → PDF
+# 📄 MD → PDF
 
 [![CI](https://github.com/matiascostamagna/md-to-pdf/actions/workflows/ci.yml/badge.svg)](https://github.com/matiascostamagna/md-to-pdf/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
@@ -6,12 +6,21 @@
 
 > Convert Markdown to polished PDFs — CLI, desktop GUI, or Python API.
 
-Powered by **Playwright** (Chromium headless): same render engine on Windows,
-macOS, and Linux; all dependencies managed by `pip`, no system binaries required.
+Powered by **Playwright** (Chromium headless) for PDF generation and **pywebview** for the optional desktop GUI.
 
 ---
 
-## Features
+## ⚠️ Important Note (Linux users)
+
+The CLI works out-of-the-box using Playwright (no system GUI dependencies required).
+
+However, the *desktop GUI requires a system GUI backend (Qt or GTK)* on Linux.
+
+If the GUI fails to start, you likely need to install additional system libraries.
+
+---
+
+## ✨ Features
 
 | Category | What's supported |
 |----------|-----------------|
@@ -28,56 +37,96 @@ macOS, and Linux; all dependencies managed by `pip`, no system binaries required
 
 ---
 
-## Installation
+## 📦 Installation
 
-### Windows / macOS
+### Recommended (isolated environment)
 
-```sh
+```bash
+python -m venv .venv
+source .venv/bin/activate
 pip install -e .
-md-to-pdf --install-browser   # one-time Chromium download (~150 MB)
+```
+---
+
+### Alternative (recommended for CLI tools)
+
+```bash
+pipx install .
 ```
 
-### Linux
+---
 
-Playwright's Chromium build requires a few system libs:
+### 🌐 Install browser (required)
 
-```sh
-# Ubuntu / Debian
+This project uses Playwright to download Chromium:
+
+```bash
+md-to-pdf --install-browser
+```
+Browser binaries are cached by Playwright in:
+- Linux/macOS: `~/.cache/ms-playwright`
+- Windows: `%LOCALAPPDATA%\ms-playwright`
+
+### 🐧 Linux system dependencies
+
+Playwright requires system libraries for Chromium:
+
+```bash
 sudo apt update && sudo apt install -y \
   libatk1.0-0 libatk-bridge2.0-0 libcups2 libdbus-1-3 libexpat1 libgbm1 \
   libpango-1.0-0 libpangocairo-1.0-0 libx11-6 libx11-xcb1 libxcb1 \
   libxcomposite1 libxcursor1 libxdamage1 libxext6 libxfixes3 libxi6 \
   libxinerama1 libxrandr2 libxrender1 libxss1 libxtst6 libxkbcommon0
-
-# Fedora / RHEL
-sudo dnf install -y atk at-spi2-atk cups dbus expat libgbm libpango libx11 \
-  libxcomposite libxcursor libxdamage libxext libxfixes libxi libxinerama \
-  libxrandr libxrender libxss libxtst libxkbcommon
-
-# Arch
-sudo pacman -S --needed atk at-spi2-atk cups dbus expat libgbm pango libx11 \
-  libxcomposite libxcursor libxdamage libxext libxfixes libxi libxinerama \
-  libxrandr libxrender libxss libxtst libxkbcommon
 ```
 
 Then:
 
-```sh
+```bash
 pip install -e .
 md-to-pdf --install-browser
 ```
 
-The browser binary is cached by Playwright at `~/.cache/ms-playwright` (Linux/macOS)
-or `%LOCALAPPDATA%\ms-playwright` (Windows) — not inside this project.
+---
+
+#### 🖥️ GUI dependencies (Linux only)
+
+The GUI uses **pywebview**, which requires a native backend.
+
+#### Option A — Qt (recommended)
+
+```bash
+pip install pyqt6 PyQt6-WebEngine qtpy
+sudo apt install libxcb-cursor0
+```
+
+#### Option B — GTK (alternative)
+
+```bash
+sudo apt install python3-gi gir1.2-gtk-3.0
+pip install PyGObject
+```
+
+#### 🔧 If GUI fails to start
+
+Force Qt backend:
+
+```bash
+PYWEBVIEW_GUI=qt md-to-pdf
+```
 
 ---
 
-## Usage
+## 🚀 Usage
 
-### GUI
+### GUI mode
 
-```sh
-md-to-pdf          # launches the GUI
+```bash
+md-to-pdf
+```
+
+or
+
+```bash
 md-to-pdf --gui
 ```
 
@@ -85,12 +134,18 @@ Drop a `.md` file onto the window (or click **Open**), adjust settings in the si
 and click **Convert to PDF**. Output directory, page size, and custom CSS are remembered
 between sessions.
 
-### CLI
+### CLI mode
 
-```sh
+```bash
 md-to-pdf document.md                        # output: document.pdf (same dir)
+```
+```bash
 md-to-pdf document.md -o ~/exports/out.pdf
+```
+```bash
 md-to-pdf document.md --page-size Letter
+```
+```bash
 md-to-pdf document.md --css custom.css --title "My Report"
 ```
 
@@ -106,7 +161,7 @@ md-to-pdf document.md --css custom.css --title "My Report"
 | `--install-browser` | — | Download Chromium (run once after install) |
 | `-v, --verbose` | — | Verbose logging |
 
-### Python API
+### 🐍 Python API
 
 ```python
 from pathlib import Path
@@ -124,7 +179,7 @@ md_to_pdf(
 
 ---
 
-## Project Structure
+## 🧱 Project Structure
 
 ```
 md_to_pdf/
@@ -144,14 +199,20 @@ tests/
 
 ---
 
-## Development
+## 🛠️ Development
 
 ```sh
 pip install -e ".[dev]"
 pytest
+ruff check . 
 ```
 
-Dev extras: `ruff` (linter) · `pytest`.
+## 📌 Notes
+- CLI mode uses Playwright only
+- GUI mode requires Qt or GTK on Linux
+- Windows/macOS generally work without extra system packages
+- Qt is preferred if multiple GUI backends are installed
+- If GUI fails, force backend with PYWEBVIEW_GUI=qt
 
 ---
 
