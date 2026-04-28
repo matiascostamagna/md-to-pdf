@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=75", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "md-to-pdf"
+version = "1.0.0"
+description = "Convert Markdown to PDF with full support for images, SVG, HTML, LaTeX math, and syntax highlighting"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "MIT"}
+authors = [{name = "MD to PDF"}]
+
+dependencies = [
+    "markdown>=3.7",
+    "pymdown-extensions>=10.12",
+    "playwright>=1.45",
+    "pygments>=2.18",
+    "pywebview>=5.3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "ruff>=0.6",
+    "pytest>=8",
+]
+
+[project.scripts]
+md-to-pdf = "md_to_pdf.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["md_to_pdf*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"

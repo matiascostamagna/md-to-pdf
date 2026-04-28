@@ -1,0 +1,1 @@
+"""MD → PDF Converter — Markdown to PDF with full syntax support."""

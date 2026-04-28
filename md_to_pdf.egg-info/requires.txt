@@ -1,0 +1,8 @@
+markdown>=3.7
+pymdown-extensions>=10.12
+pdfkit>=1.0
+pygments>=2.18
+pywebview>=5.3
+
+[dev]
+ruff>=0.6
