@@ -3,6 +3,7 @@
 [![CI](https://github.com/matiascostamagna/md-to-pdf/actions/workflows/ci.yml/badge.svg)](https://github.com/matiascostamagna/md-to-pdf/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
+[![PyPI](https://img.shields.io/pypi/v/md-to-pdf)](https://pypi.org/project/md-to-pdf/)
 
 > Convert Markdown to polished PDFs — CLI, desktop GUI, or Python API.
 
