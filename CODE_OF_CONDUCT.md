@@ -20,7 +20,7 @@ Examples of unacceptable behavior:
 
 ## Enforcement
 
-Instances of unacceptable behavior may be reported to **matias.costamagna@mi.unc.edu.ar**. All complaints will be reviewed and investigated promptly and fairly. Maintainers are obligated to maintain confidentiality regarding the reporter.
+Instances of unacceptable behavior may be reported to **majacostamagna@hotmail.com**. All complaints will be reviewed and investigated promptly and fairly. Maintainers are obligated to maintain confidentiality regarding the reporter.
 
 ## Attribution
 
